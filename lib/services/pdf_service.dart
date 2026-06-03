@@ -2,9 +2,22 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import 'package:intl/intl.dart';
+import '../database/supabase_service.dart';
 
 /// Servicio para la generación de reportes en PDF.
 class PdfService {
+  /// Genera un reporte PDF directamente desde la lista de objetos [Producto].
+  static Future<void> generarReporteDesdeProductos(List<Producto> productos, String nombreNegocio) async {
+    final productosMap = productos.map((p) => {
+      'nombre': p.nombre,
+      'categoria': p.categoria,
+      'precio': p.precio,
+      'stock': p.stock,
+    }).toList();
+    
+    await generarReportePDF(productosMap, nombreNegocio);
+  }
+
   /// Genera y abre el diálogo de impresión para un reporte de inventario.
   /// 
   /// [productos] debe ser una lista de mapas con las llaves: 

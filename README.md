@@ -1,75 +1,125 @@
-# Stocky - Sistema de Gestión de Inventarios Profesional
+# Stocky - Ecosistema de Gestión de Inventarios Vibrante
 
-Stocky es una plataforma integral diseñada para la administración de inventarios, orientada a proporcionar a negocios una herramienta robusta y segura para el control de activos. La aplicación utiliza Flutter para su interfaz y una arquitectura de nube moderna basada en Supabase, permitiendo una gestión de datos centralizada, segura y escalable.
+**Stocky** es una plataforma de software profesional diseñada para transformar la administración de inventarios en una experiencia energética, intuitiva y de alto impacto visual. Desarrollada con **Flutter** y **Supabase**, Stocky combina una arquitectura de nube robusta con un lenguaje de diseño moderno orientado a la productividad de pequeños y medianos negocios.
 
-## Propósito del Proyecto
+---
 
-Este sistema fue desarrollado para solventar la necesidad de una gestión de stock centralizada y reactiva. Su arquitectura desacoplada permite que la lógica de negocio y la persistencia en la nube funcionen de manera fluida, garantizando que el usuario siempre tenga acceso a información precisa sobre su inventario desde cualquier dispositivo con conexión a internet.
+## 🎨 Sistema de Diseño: Vibrant & High-Energy
 
-## Flujo de Operación del Usuario
+Stocky rompe con la estética tradicional de oficina para adoptar un sistema visual basado en la energía y el contraste:
 
-Para asegurar una comprensión clara del funcionamiento de Stocky, se describe el flujo estándar de interacción:
+- **Paleta Cromática**: Uso de Azul Eléctrico (`#2962FF`), Turquesa Neón (`#00E5FF`) y Magenta Energético (`#F50057`).
+- **Jerarquía Visual**: Tipografías en mayúsculas para acciones clave, sombras dinámicas con tinte azulado y bordes ultra-redondeados (30px) que transmiten modernidad.
+- **Experiencia Inmersiva**: Fondos en degradado dinámico y micro-animaciones (Hero tags) para transiciones fluidas entre pantallas.
 
-1. **Autenticación**: El usuario se registra mediante un sistema de gestión de negocios. Cada cuenta posee un entorno de datos completamente aislado mediante identificadores únicos.
-2. **Panel de Control (Dashboard)**: Tras acceder, el sistema presenta un resumen financiero y operativo calculado en tiempo real que incluye la inversión total, el recuento de artículos con poco stock y la categoría con mayor volumen de existencias.
-3. **Gestión de Productos**: El usuario puede añadir nuevos artículos especificando nombre, categoría, precio, existencias e incluso adjuntar una imagen del producto capturada desde la cámara o galería.
-4. **Análisis y Reportes**: La plataforma permite la exportación de los datos a formato PDF profesional para auditorías, revisiones externas o control administrativo.
+---
 
-## Funcionalidades y Lógica de Negocio
+## 🚀 Características Principales
 
-### Control Inteligente de Stock
-La aplicación integra una regla de negocio crítica para la prevención de quiebres de inventario:
-- **Alerta de Stock Bajo**: El sistema identifica automáticamente cualquier producto con 3 unidades o menos. Estos artículos se resaltan visualmente en la interfaz con indicadores de alerta en color rojo y etiquetas de advertencia, permitiendo al administrador tomar decisiones de reabastecimiento inmediatas.
+### 1. Gestión de Acceso Profesional
+- **Autenticación en la Nube**: Sistema de registro y acceso seguro vía Supabase Auth.
+- **Aislamiento Multitenant**: Estructura de datos diseñada para que cada negocio opere en un entorno privado y seguro.
 
-### Gestión Multimedia
-- **Almacenamiento de Imágenes**: Integración con Supabase Storage para el almacenamiento de fotografías de los productos, facilitando la identificación visual de los artículos en el inventario.
+### 2. Control de Inventario Inteligente (CRUD+)
+- **Gestión Multimedia**: Carga y visualización de imágenes de productos almacenadas en Supabase Storage.
+- **Calculadora de Margen**: Herramienta integrada en el formulario de creación para calcular precios de venta basados en el costo y el margen de utilidad deseado.
+- **Categorización Dinámica**: Clasificación organizada para facilitar el filtrado y análisis.
 
-### Dashboard de Análisis en Tiempo Real
-El panel principal ofrece métricas calculadas dinámicamente mediante el procesamiento de los datos del inventario:
-- **Inversión Total**: Cálculo automático del valor monetario total del inventario (Precio x Stock).
-- **Top Categoría**: Identificación de la categoría con mayor volumen de existencias acumulado.
-- **Indicador Crítico**: Contador en tiempo real de productos en estado de alerta por bajo stock.
+### 3. Centro de Analíticas y Reportes
+- **Dashboard de Métricas**: Pantalla dedicada (`InventorySummaryView`) que procesa en tiempo real la inversión total, el volumen de stock y las categorías dominantes.
+- **Exportación PDF**: Generación instantánea de reportes profesionales con subtotales financieros, listos para imprimir o compartir.
 
-### Módulo de Exportación PDF
-Incluye un servicio dedicado para la generación de reportes profesionales. El documento PDF generado incluye:
-- Encabezado con el nombre del negocio y fecha de emisión.
-- Tabla detallada de productos con subtotales financieros por línea.
-- Resumen de inversión total consolidado al final del documento.
+### 4. Lógica de Negocio Crítica
+- **Sistema de Alerta "¡URGENTE!"**: Identificación automática de productos con stock bajo (≤ 3 unidades) mediante etiquetas vibrantes en magenta, asegurando que el reabastecimiento nunca se olvide.
 
-## Stack Tecnológico
+---
 
-- **Frontend**: Flutter SDK (Framework de UI multi-plataforma).
-- **Lenguaje**: Dart.
-- **Backend-as-a-Service**: Supabase (Autenticación, Base de datos PostgreSQL y Storage).
-- **Gestión de Estado y Datos**: Streams para actualizaciones reactivas en tiempo real.
-- **Gestión de Configuración**: flutter_dotenv para el manejo seguro de claves de API y variables de entorno.
-- **Generación de Documentos**: Librerías PDF y Printing para la creación de reportes dinámicos.
+## 🛠️ Stack Tecnológico
 
-## Arquitectura Técnica
+- **Frontend**: Flutter (Dart) con Material 3.
+- **Backend-as-a-Service**: [Supabase](https://supabase.com/)
+  - **Base de Datos**: PostgreSQL con RLS (Row Level Security).
+  - **Auth**: Autenticación por correo y contraseña.
+  - **Storage**: Gestión de buckets para imágenes de productos.
+- **Librerías Clave**:
+  - `cached_network_image`: Para carga eficiente de fotos.
+  - `shimmer`: Efectos de carga elegantes.
+  - `pdf` & `printing`: Motor de reportes.
+  - `flutter_dotenv`: Manejo seguro de credenciales.
 
-El proyecto sigue un patrón de diseño limpio y escalable, separando las responsabilidades en capas claras:
+---
 
-- **Capa de Datos (`lib/database/`)**: Centraliza la comunicación con Supabase, manejando la persistencia de datos, autenticación de usuarios y subida de archivos multimedia.
-- **Capa de Servicios (`lib/services/`)**: Contiene la lógica de negocio para la generación de documentos PDF y procesos auxiliares independientes de la UI.
-- **Capa de Interfaz (`lib/views/`)**: Implementa componentes reactivos que se actualizan automáticamente ante cualquier cambio en el backend mediante el uso de StreamBuilder.
+## 📂 Estructura del Sistema
 
-## Requisitos e Instalación
+```text
+lib/
+├── database/
+│   └── supabase_service.dart   # Singleton: Auth, DB y Storage.
+├── services/
+│   └── pdf_service.dart        # Lógica de construcción de documentos.
+├── views/
+│   ├── welcome_view.dart       # Landing page de alto impacto.
+│   ├── login_view.dart         # Acceso con diseño vibrante.
+│   ├── register_view.dart      # Registro de nuevos negocios.
+│   ├── main_view.dart          # Panel principal y buscador reactivo.
+│   ├── gestion_producto_view.dart # Formulario con calculadora de margen.
+│   ├── inventory_summary_view.dart # Analíticas y exportación PDF.
+│   └── profile_view.dart       # Gestión de cuenta y borrado de datos.
+└── main.dart                   # Inicialización de servicios y entorno.
+```
 
-### Requisitos del Entorno
-- Flutter SDK (Canal estable).
-- Una instancia de proyecto en Supabase.
-- Archivo `.env` en la raíz del proyecto con las credenciales de Supabase (`SUPABASE_URL` y `SUPABASE_ANON_KEY`).
+---
 
-### Pasos para el Despliegue Local
-1. Clonar el repositorio.
-2. Ejecutar `flutter pub get` para obtener las dependencias.
-3. Configurar el archivo `.env` con las claves correspondientes.
-4. Lanzar la aplicación:
-   ```bash
-   flutter run
-   ```
+## 📊 Modelo de Datos (PostgreSQL)
 
-## Desarrolladores del Proyecto
+### Tabla: `usuarios`
+| Columna | Tipo | Descripción |
+|---|-|---|
+| `id` | UUID | Identificador único vinculado a Supabase Auth. |
+| `nombre_negocio` | Text | Nombre comercial del usuario. |
+| `correo` | Text | Email de contacto. |
 
-- Adrian
-- Odelkis
+### Tabla: `productos`
+| Columna | Tipo | Descripción |
+|---|---|---|
+| `id` | BigInt | ID autoincremental. |
+| `id_usuario` | UUID | Relación con el dueño del producto. |
+| `nombre` | Text | Nombre del artículo. |
+| `categoria` | Text | Categoría del producto. |
+| `precio` | Numeric | Precio de venta. |
+| `stock` | Integer | Cantidad disponible. |
+| `imagen_url` | Text | URL pública del archivo en Storage. |
+
+---
+
+## ⚙️ Instalación y Configuración
+
+### 1. Requisitos
+- Flutter SDK (Versión estable).
+- Proyecto en Supabase con bucket `productos` habilitado.
+
+### 2. Variables de Entorno
+Crear un archivo `.env` en la raíz con:
+```env
+SUPABASE_URL=https://tu-proyecto.supabase.co
+SUPABASE_ANON_KEY=tu-clave-anonima
+```
+
+### 3. Despliegue
+```bash
+flutter pub get
+flutter run
+```
+
+---
+
+## 👨‍💻 Autores y Contribución
+
+Desarrollado bajo estándares de ingeniería de software para la gestión moderna de activos.
+
+**Equipo de Desarrollo:**
+- **Adrian**
+- **Odelkis**
+
+**Licencia:** 
+Este proyecto se distribuye bajo la Licencia MIT.

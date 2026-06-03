@@ -1,5 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 
 /// Modelo de Usuario para la app
 class Usuario {
@@ -128,6 +129,40 @@ class SupabaseService {
 
   Future<void> logout() async {
     await _supabase.auth.signOut();
+  }
+
+  // --- USUARIOS ---
+
+  Future<Usuario?> obtenerDetallesUsuario(String userId) async {
+    try {
+      final data = await _supabase
+          .from('usuarios')
+          .select()
+          .eq('id', userId)
+          .maybeSingle();
+      
+      if (data == null) return null;
+      return Usuario.fromJson(data);
+    } catch (e) {
+      debugPrint('Error al obtener detalles del usuario: $e');
+      return null;
+    }
+  }
+
+  Future<void> eliminarDatosCuenta(String userId) async {
+    try {
+      // 1. Borrar perfil (esto debería borrar productos por el CASCADE si configuraste el SQL)
+      await _supabase.from('usuarios').delete().eq('id', userId);
+      
+      // 2. Por seguridad, borramos productos explícitamente si no hay cascada
+      await _supabase.from('productos').delete().eq('id_usuario', userId);
+      
+      // 3. Cerrar sesión
+      await logout();
+    } catch (e) {
+      debugPrint('Error al eliminar datos: $e');
+      throw Exception('No se pudo eliminar la información');
+    }
   }
 
   // --- PRODUCTOS ---

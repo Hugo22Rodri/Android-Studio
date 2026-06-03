@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'views/login_view.dart'; 
+import 'views/main_view.dart';
+import 'views/welcome_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,23 +29,42 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Verificamos si existe una sesión activa para persistir el login
+    final session = Supabase.instance.client.auth.currentSession;
+
     return MaterialApp(
       title: 'Stocky - Gestión de Inventario',
       debugShowCheckedModeBanner: false,
-      // Aplicamos un tema limpio basado en Material 3 con esquema de colores azul.
+      // Soporte para Modo Claro y Oscuro
+      themeMode: ThemeMode.system, 
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.blue,
           brightness: Brightness.light,
         ),
-        appBarTheme: const AppBarTheme(
-          centerTitle: true,
-          elevation: 0,
+        appBarTheme: const AppBarTheme(centerTitle: true, elevation: 0),
+        cardTheme: CardThemeData(
+          elevation: 2,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         ),
       ),
-      // Configuramos el inicio de la aplicación directamente en la vista de Login.
-      home: const LoginView(),
+      darkTheme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.blue,
+          brightness: Brightness.dark,
+        ),
+        appBarTheme: const AppBarTheme(centerTitle: true, elevation: 0),
+        cardTheme: CardThemeData(
+          elevation: 2,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        ),
+      ),
+      // Si hay sesión, vamos al MainView; si no, a la pantalla de Bienvenida (Portada).
+      home: session != null 
+          ? MainView(userId: session.user.id) 
+          : const WelcomeView(),
     );
   }
 }
