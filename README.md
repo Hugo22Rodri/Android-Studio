@@ -1,97 +1,75 @@
-# Stocky - Sistema de Gestion de Inventarios
+# Stocky - Sistema de Gestión de Inventarios Profesional
 
-Stocky es una aplicacion profesional diseñada para la gestion eficiente de inventarios y control de stock. Desarrollada con el framework Flutter, la aplicacion destaca por su capacidad de persistencia de datos en entornos web utilizando SQLite mediante la tecnologia WebAssembly (WASM), proporcionando una experiencia de usuario fluida y reactiva.
+Stocky es una plataforma integral diseñada para la administración de inventarios, orientada a proporcionar a negocios una herramienta robusta y segura para el control de activos. La aplicación utiliza Flutter para su interfaz y una arquitectura de nube moderna basada en Supabase, permitiendo una gestión de datos centralizada, segura y escalable.
 
-## Introduccion
+## Propósito del Proyecto
 
-El objetivo de Stocky es proporcionar a los pequeños y medianos negocios una herramienta robusta para el seguimiento de sus productos. A diferencia de las aplicaciones web tradicionales que dependen enteramente de una API externa para cada operacion, Stocky implementa una base de datos local en el navegador, lo que reduce la latencia y mejora la seguridad de los datos del usuario.
+Este sistema fue desarrollado para solventar la necesidad de una gestión de stock centralizada y reactiva. Su arquitectura desacoplada permite que la lógica de negocio y la persistencia en la nube funcionen de manera fluida, garantizando que el usuario siempre tenga acceso a información precisa sobre su inventario desde cualquier dispositivo con conexión a internet.
 
-## Caracteristicas Principales
+## Flujo de Operación del Usuario
 
-### Gestion de Usuarios y Seguridad
-La aplicacion implementa un sistema de registro y autenticacion. Cada negocio cuenta con un espacio de trabajo aislado, garantizando que los datos de inventario sean accesibles unicamente por el usuario propietario.
+Para asegurar una comprensión clara del funcionamiento de Stocky, se describe el flujo estándar de interacción:
 
-### Control de Inventario Completo
-El sistema permite realizar todas las operaciones CRUD (Crear, Leer, Actualizar y Eliminar) sobre el catalogo de productos. Los campos soportados incluyen:
-- Identificador unico.
-- Nombre del producto.
-- Clasificacion por categorias.
-- Control de precios (formato decimal).
-- Gestion de existencias (stock).
+1. **Autenticación**: El usuario se registra mediante un sistema de gestión de negocios. Cada cuenta posee un entorno de datos completamente aislado mediante identificadores únicos.
+2. **Panel de Control (Dashboard)**: Tras acceder, el sistema presenta un resumen financiero y operativo calculado en tiempo real que incluye la inversión total, el recuento de artículos con poco stock y la categoría con mayor volumen de existencias.
+3. **Gestión de Productos**: El usuario puede añadir nuevos artículos especificando nombre, categoría, precio, existencias e incluso adjuntar una imagen del producto capturada desde la cámara o galería.
+4. **Análisis y Reportes**: La plataforma permite la exportación de los datos a formato PDF profesional para auditorías, revisiones externas o control administrativo.
 
-### Persistencia de Datos Avanzada
-Mediante la integracion de la libreria Drift (anteriormente Moor), Stocky utiliza un motor SQLite compilado a WASM. Esto permite:
-- Almacenamiento persistente en el navegador del cliente.
-- Consultas SQL tipadas y seguras.
-- Sincronizacion reactiva de la interfaz de usuario mediante Streams.
+## Funcionalidades y Lógica de Negocio
 
-### Interfaz de Usuario Adaptativa
-El diseño ha sido optimizado para funcionar tanto en resoluciones de escritorio como en dispositivos moviles, asegurando que la gestion del inventario se pueda realizar desde cualquier lugar.
+### Control Inteligente de Stock
+La aplicación integra una regla de negocio crítica para la prevención de quiebres de inventario:
+- **Alerta de Stock Bajo**: El sistema identifica automáticamente cualquier producto con 3 unidades o menos. Estos artículos se resaltan visualmente en la interfaz con indicadores de alerta en color rojo y etiquetas de advertencia, permitiendo al administrador tomar decisiones de reabastecimiento inmediatas.
 
-## Stack Tecnologico
+### Gestión Multimedia
+- **Almacenamiento de Imágenes**: Integración con Supabase Storage para el almacenamiento de fotografías de los productos, facilitando la identificación visual de los artículos en el inventario.
 
-- Framework: Flutter
-- Lenguaje: Dart
-- Motor de Base de Datos: Drift (SQLite para Flutter)
-- Formato de Ejecucion Web: WebAssembly (WASM)
-- Gestion de Estado: Programacion Reactiva con Streams y Listenables
+### Dashboard de Análisis en Tiempo Real
+El panel principal ofrece métricas calculadas dinámicamente mediante el procesamiento de los datos del inventario:
+- **Inversión Total**: Cálculo automático del valor monetario total del inventario (Precio x Stock).
+- **Top Categoría**: Identificación de la categoría con mayor volumen de existencias acumulado.
+- **Indicador Crítico**: Contador en tiempo real de productos en estado de alerta por bajo stock.
 
-## Arquitectura de la Base de Datos
+### Módulo de Exportación PDF
+Incluye un servicio dedicado para la generación de reportes profesionales. El documento PDF generado incluye:
+- Encabezado con el nombre del negocio y fecha de emisión.
+- Tabla detallada de productos con subtotales financieros por línea.
+- Resumen de inversión total consolidado al final del documento.
 
-La estructura de datos se divide en dos entidades principales relacionadas:
+## Stack Tecnológico
 
-1. Tabla Usuarios: Almacena la informacion del negocio, incluyendo nombre, correo electronico y credenciales de acceso.
-2. Tabla Productos: Almacena los detalles de cada item del inventario, manteniendo una relacion de llave foranea con la tabla de usuarios para garantizar la integridad y privacidad de los datos.
+- **Frontend**: Flutter SDK (Framework de UI multi-plataforma).
+- **Lenguaje**: Dart.
+- **Backend-as-a-Service**: Supabase (Autenticación, Base de datos PostgreSQL y Storage).
+- **Gestión de Estado y Datos**: Streams para actualizaciones reactivas en tiempo real.
+- **Gestión de Configuración**: flutter_dotenv para el manejo seguro de claves de API y variables de entorno.
+- **Generación de Documentos**: Librerías PDF y Printing para la creación de reportes dinámicos.
 
-La aplicacion hace uso de interceptores de consultas (QueryInterceptors) para el monitoreo y depuracion de las operaciones SQL en tiempo de ejecucion.
+## Arquitectura Técnica
 
-## Requisitos del Sistema
+El proyecto sigue un patrón de diseño limpio y escalable, separando las responsabilidades en capas claras:
 
-- Flutter SDK (Version estable mas reciente)
-- Navegador Web moderno con soporte para WebAssembly (Chrome, Edge, Firefox o Safari)
+- **Capa de Datos (`lib/database/`)**: Centraliza la comunicación con Supabase, manejando la persistencia de datos, autenticación de usuarios y subida de archivos multimedia.
+- **Capa de Servicios (`lib/services/`)**: Contiene la lógica de negocio para la generación de documentos PDF y procesos auxiliares independientes de la UI.
+- **Capa de Interfaz (`lib/views/`)**: Implementa componentes reactivos que se actualizan automáticamente ante cualquier cambio en el backend mediante el uso de StreamBuilder.
 
-## Instrucciones de Instalacion y Despliegue
+## Requisitos e Instalación
 
-### 1. Clonacion del Proyecto
-Obtenga una copia local del repositorio:
-```bash
-git clone https://github.com/tu-usuario/stocky.git
-cd stocky
-```
+### Requisitos del Entorno
+- Flutter SDK (Canal estable).
+- Una instancia de proyecto en Supabase.
+- Archivo `.env` en la raíz del proyecto con las credenciales de Supabase (`SUPABASE_URL` y `SUPABASE_ANON_KEY`).
 
-### 2. Gestion de Dependencias
-Descargue los paquetes necesarios definidos en el archivo pubspec.yaml:
-```bash
-flutter pub get
-```
+### Pasos para el Despliegue Local
+1. Clonar el repositorio.
+2. Ejecutar `flutter pub get` para obtener las dependencias.
+3. Configurar el archivo `.env` con las claves correspondientes.
+4. Lanzar la aplicación:
+   ```bash
+   flutter run
+   ```
 
-### 3. Generacion de Codigo
-Dado que el proyecto utiliza generacion de codigo para la capa de persistencia, es necesario ejecutar el generador:
-```bash
-flutter pub run build_runner build --delete-conflicting-outputs
-```
-
-### 4. Ejecucion
-Para iniciar la aplicacion en el entorno de desarrollo web:
-```bash
-flutter run -d chrome
-```
-
-## Estructura de Directorios
-
-- lib/database/: Contiene la definicion del esquema de la base de datos, las tablas y la configuracion de la conexion WASM.
-- lib/views/: Implementacion de las pantallas de la interfaz de usuario, incluyendo el inicio de sesion, el panel principal y los formularios de gestion.
-- web/: Incluye los archivos necesarios para el motor SQLite (sqlite3.wasm y drift_worker.js).
-
-## Consideraciones de Desarrollo
-
-Si se realizan modificaciones en los archivos de definicion de tablas (lib/database/connection.dart), se debe regenerar el archivo de soporte (connection.g.dart) utilizando el comando de build_runner mencionado anteriormente.
-
-## Licencia
-
-Este proyecto se distribuye bajo la Licencia MIT. Para mas detalles, consulte el archivo LICENSE en la raiz del repositorio.
-
-## Desarrolladores
+## Desarrolladores del Proyecto
 
 - Adrian
 - Odelkis
