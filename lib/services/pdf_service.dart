@@ -46,7 +46,7 @@ class PdfService {
                 crossAxisAlignment: pw.CrossAxisAlignment.end,
                 children: [
                   pw.Text('Fecha de Emisión:', style: pw.TextStyle(fontSize: 10, fontWeight: pw.FontWeight.bold)),
-                  pw.Text(date, style: const pw.TextStyle(fontSize: 10)),
+                  pw.Text(date, style: pw.TextStyle(fontSize: 10)),
                 ],
               ),
             ],
@@ -115,7 +115,7 @@ class PdfService {
             child: pw.Center(
               child: pw.Text(
                 'Este documento es un reporte generado automáticamente por Stocky Inventory Management.',
-                style: const pw.TextStyle(fontSize: 8, color: PdfColors.grey500, fontStyle: pw.FontStyle.italic),
+                style: pw.TextStyle(fontSize: 8, color: PdfColors.grey500, fontStyle: pw.FontStyle.italic),
               ),
             ),
           ),

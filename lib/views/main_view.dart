@@ -355,9 +355,9 @@ class _ProductCard extends StatelessWidget {
               height: 100,
               width: double.infinity,
               color: Colors.grey[100],
-              child: producto.imagen_url != null
+              child: producto.imagenUrl != null
                   ? Image.network(
-                      producto.imagen_url!,
+                      producto.imagenUrl!,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) => const Icon(Icons.broken_image, size: 40, color: Colors.grey),
                       loadingBuilder: (context, child, loadingProgress) {

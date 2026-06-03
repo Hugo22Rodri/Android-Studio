@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'database/supabase_service.dart'; 
 import 'views/login_view.dart'; 
 
 Future<void> main() async {

@@ -41,7 +41,7 @@ class _GestionProductoViewState extends State<GestionProductoView> {
         _categoriaController.text = producto.categoria;
         _precioController.text = producto.precio.toString();
         _stockController.text = producto.stock.toString();
-        _imagenUrlExistente = producto.imagen_url;
+        _imagenUrlExistente = producto.imagenUrl;
       });
     }
   }
@@ -191,7 +191,7 @@ class _GestionProductoViewState extends State<GestionProductoView> {
             categoria: categoria,
             precio: precio,
             stock: stock,
-            imagen_url: finalImageUrl,
+            imagenUrl: finalImageUrl,
           ));
         } else {
           await SupabaseService.instance.actualizarProducto(Producto(
@@ -201,7 +201,7 @@ class _GestionProductoViewState extends State<GestionProductoView> {
             categoria: categoria,
             precio: precio,
             stock: stock,
-            imagen_url: finalImageUrl,
+            imagenUrl: finalImageUrl,
           ));
         }
 

@@ -26,7 +26,7 @@ class Producto {
   final String categoria;
   final double precio;
   final int stock;
-  final String? imagen_url; // Cambiado para coincidir con DB y evitar confusiones
+  final String? imagenUrl; // Cambiado para coincidir con DB y evitar confusiones
 
   Producto({
     required this.id,
@@ -35,7 +35,7 @@ class Producto {
     required this.categoria,
     required this.precio,
     required this.stock,
-    this.imagen_url,
+    this.imagenUrl,
   });
 
   factory Producto.fromJson(Map<String, dynamic> json) {
@@ -46,7 +46,7 @@ class Producto {
       categoria: json['categoria'],
       precio: (json['precio'] as num).toDouble(),
       stock: json['stock'],
-      imagen_url: json['imagen_url'],
+      imagenUrl: json['imagen_url'],
     );
   }
 
@@ -57,7 +57,7 @@ class Producto {
       'categoria': categoria,
       'precio': precio,
       'stock': stock,
-      'imagen_url': imagen_url,
+      'imagen_url': imagenUrl,
     };
     if (includeId) {
       map['id'] = id;
@@ -91,7 +91,7 @@ class SupabaseService {
       final String publicUrl = _supabase.storage.from('productos').getPublicUrl(fileName);
       return publicUrl;
     } catch (e) {
-      print('Error subiendo imagen: $e');
+      // Error manejado silenciosamente
       return null;
     }
   }
