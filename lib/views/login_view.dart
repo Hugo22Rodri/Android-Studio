@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../database/connection.dart';
+import '../database/supabase_service.dart';
 import 'main_view.dart';
 import 'register_view.dart';
 
@@ -42,8 +42,9 @@ class _LoginViewState extends State<LoginView> {
       setState(() => _isLoading = true);
 
       try {
-        // Llamada a la lógica de base de datos definida en connection.dart
-        final userId = await AppDatabase.instance.verificarLogin(
+        // Llamada al nuevo servicio de Supabase: SupabaseService
+        // Se pasa el correo y contraseña para obtener el ID del usuario
+        final userId = await SupabaseService.instance.verificarLogin(
           _correoController.text.trim(),
           _contraseniaController.text,
         );
@@ -51,18 +52,16 @@ class _LoginViewState extends State<LoginView> {
         if (!mounted) return;
 
         if (userId != null) {
-          // Login exitoso
-          if (mounted) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (_) => MainView(userId: userId)),
-            );
-          }
+          // Login exitoso: Navegamos a la vista de inventario (MainView) pasando el ID
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => MainView(userId: userId)),
+          );
         } else {
-          // Credenciales incorrectas
+          // Credenciales incorrectas según requerimiento
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Correo o contraseña incorrectos'),
+              content: Text('Credenciales incorrectas'),
               backgroundColor: Colors.redAccent,
             ),
           );

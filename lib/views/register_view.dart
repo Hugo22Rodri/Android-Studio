@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:drift/drift.dart' show Value;
-import '../database/connection.dart';
+import '../database/supabase_service.dart';
 import 'login_view.dart';
 
 /// [RegisterView] permite a los nuevos usuarios crear una cuenta en Stocky.
@@ -21,7 +20,7 @@ class _RegisterViewState extends State<RegisterView> {
   final _formKey = GlobalKey<FormState>();
 
   // Controladores de texto
-  final _nombreController = TextEditingController();
+  final _nombreNegocioController = TextEditingController();
   final _correoController = TextEditingController();
   final _contraseniaController = TextEditingController();
   final _confirmarContraseniaController = TextEditingController();
@@ -33,7 +32,7 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   void dispose() {
-    _nombreController.dispose();
+    _nombreNegocioController.dispose();
     _correoController.dispose();
     _contraseniaController.dispose();
     _confirmarContraseniaController.dispose();
@@ -46,18 +45,16 @@ class _RegisterViewState extends State<RegisterView> {
       setState(() => _isLoading = true);
 
       try {
-        // Preparar el objeto para Drift
-        final nuevoUsuario = UsuariosCompanion(
-          nombreNegocio: Value(_nombreController.text.trim()),
-          correo: Value(_correoController.text.trim()),
-          contrasenia: Value(_contraseniaController.text),
+        // Llamada a la función asíncrona del backend (SupabaseService)
+        await SupabaseService.instance.registrarUsuario(
+          nombreNegocio: _nombreNegocioController.text.trim(),
+          correo: _correoController.text.trim(),
+          contrasenia: _contraseniaController.text,
         );
-
-        // Guardar en la DB
-        await AppDatabase.instance.registrarUsuario(nuevoUsuario);
 
         if (!mounted) return;
 
+        // SnackBar de éxito
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Cuenta creada con éxito. ¡Inicia sesión!'),
@@ -65,19 +62,19 @@ class _RegisterViewState extends State<RegisterView> {
           ),
         );
 
-        // Navegar de regreso al Login
+        // Redirige al usuario de vuelta a la pantalla de Login
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (_) => const LoginView()),
         );
       } catch (e) {
+        // SnackBar con el error
         if (mounted) {
-          String errorMsg = 'Error al registrar';
-          if (e.toString().contains('UNIQUE constraint failed')) {
-            errorMsg = 'Este correo ya está registrado';
-          }
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(errorMsg), backgroundColor: Colors.redAccent),
+            SnackBar(
+              content: Text('Error al registrar: $e'),
+              backgroundColor: Colors.redAccent,
+            ),
           );
         }
       } finally {
@@ -137,9 +134,9 @@ class _RegisterViewState extends State<RegisterView> {
 
                       // Campo: Nombre Completo
                       TextFormField(
-                        controller: _nombreController,
-                        decoration: _inputDecoration('Nombre completo', Icons.person, colorScheme),
-                        validator: (value) => (value == null || value.isEmpty) ? 'Ingresa tu nombre' : null,
+                        controller: _nombreNegocioController,
+                        decoration: _inputDecoration('Nombre del negocio', Icons.storefront, colorScheme),
+                        validator: (value) => (value == null || value.isEmpty) ? 'Ingresa el nombre de tu negocio' : null,
                       ),
                       const SizedBox(height: 16),
 

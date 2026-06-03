@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
-import 'database/connection.dart'; // importando la base de datos de stocky
-import 'views/login_view.dart'; // importando la pantalla del login
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'database/supabase_service.dart'; 
+import 'views/login_view.dart'; 
 
-/// Instancia global de la base de datos para ser accedida desde cualquier parte de la app.
-late AppDatabase database;
-
-void main() {
-  // Aseguramos que los bindings de Flutter estén inicializados antes de usar la BD.
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Inicialización global de la base de datos Drift usando la instancia singleton.
-  database = AppDatabase.instance;
+  // Cargar variables de entorno
+  try {
+    await dotenv.load(fileName: ".env");
+  } catch (e) {
+    debugPrint("Error cargando .env: $e");
+  }
+  
+  // Inicialización de Supabase usando variables de entorno
+  await Supabase.initialize(
+    url: dotenv.env['SUPABASE_URL'] ?? '',
+    anonKey: dotenv.env['SUPABASE_ANON_KEY'] ?? '',
+  );
   
   runApp(const MyApp());
 }
