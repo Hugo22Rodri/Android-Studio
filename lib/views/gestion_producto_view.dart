@@ -159,8 +159,8 @@ class _GestionProductoViewState extends State<GestionProductoView> {
                       child: Stack(
                         children: [
                           Container(
-                            width: 180,
-                            height: 180,
+                            width: 150,
+                            height: 260,
                             decoration: BoxDecoration(
                               color: const Color(0xFFF0F4FF),
                               borderRadius: BorderRadius.circular(40),

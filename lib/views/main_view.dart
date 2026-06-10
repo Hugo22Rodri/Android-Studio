@@ -160,10 +160,10 @@ class _MainViewState extends State<MainView> {
                     : GridView.builder(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent: 350,
+                          maxCrossAxisExtent: 400,
                           mainAxisSpacing: 20,
                           crossAxisSpacing: 20,
-                          mainAxisExtent: 300,
+                          mainAxisExtent: 480,
                         ),
                         itemCount: filtrados.length,
                         itemBuilder: (context, index) => _ProductCard(
@@ -217,7 +217,7 @@ class _ProductCard extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              flex: 5,
+              flex: 7,
               child: Stack(
                 fit: StackFit.expand,
                 children: [
