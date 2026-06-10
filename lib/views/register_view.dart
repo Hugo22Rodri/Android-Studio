@@ -44,7 +44,13 @@ class _RegisterViewState extends State<RegisterView> {
           MaterialPageRoute(builder: (_) => const LoginView()),
         );
       } catch (e) {
-        _showError('ERROR AL CREAR CUENTA.');
+        String errorMsg = 'ERROR AL CREAR CUENTA';
+        if (e.toString().contains('already registered')) {
+          errorMsg = 'EL CORREO YA ESTÁ REGISTRADO';
+        } else if (e.toString().contains('network')) {
+          errorMsg = 'ERROR DE CONEXIÓN';
+        }
+        _showError(errorMsg);
       } finally {
         if (mounted) setState(() => _isLoading = false);
       }
@@ -99,7 +105,7 @@ class _RegisterViewState extends State<RegisterView> {
                     borderRadius: BorderRadius.circular(40),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
+                        color: Colors.black.withValues(alpha: 0.1),
                         blurRadius: 30,
                         offset: const Offset(0, 15),
                       ),

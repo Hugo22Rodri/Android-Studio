@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:shimmer/shimmer.dart';
-import 'package:share_plus/share_plus.dart';
 import '../database/supabase_service.dart';
 import 'gestion_producto_view.dart';
 import 'profile_view.dart';
@@ -18,13 +16,26 @@ class MainView extends StatefulWidget {
 class _MainViewState extends State<MainView> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = "";
+  String _nombreNegocio = "STOCKY";
   late Stream<List<Producto>> _productosStream;
-  String _sortBy = 'nombre';
 
   @override
   void initState() {
     super.initState();
     _actualizarStream();
+    _cargarNombreNegocio();
+  }
+
+  Future<void> _cargarNombreNegocio() async {
+    final usuario = await SupabaseService.instance.obtenerDetallesUsuario(widget.userId);
+    if (usuario != null) {
+      if (mounted) setState(() => _nombreNegocio = usuario.nombreNegocio.toUpperCase());
+    } else {
+      final authUser = SupabaseService.instance.currentUser;
+      if (authUser != null && authUser.userMetadata?['nombre_negocio'] != null) {
+        if (mounted) setState(() => _nombreNegocio = authUser.userMetadata!['nombre_negocio'].toString().toUpperCase());
+      }
+    }
   }
 
   void _actualizarStream() {
@@ -87,9 +98,9 @@ class _MainViewState extends State<MainView> {
             ),
           ),
         ),
-        title: const Text(
-          'STOCKY',
-          style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, color: Colors.white),
+        title: Text(
+          _nombreNegocio,
+          style: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5, color: Colors.white),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
         actions: [
@@ -98,7 +109,7 @@ class _MainViewState extends State<MainView> {
             builder: (context, snapshot) {
               final productos = snapshot.data ?? [];
               return IconButton(
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => InventorySummaryView(productos: productos))),
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => InventorySummaryView(productos: productos, nombreNegocio: _nombreNegocio))),
                 icon: const Icon(Icons.insights_rounded),
                 tooltip: 'Analíticas',
               );
@@ -195,7 +206,7 @@ class _ProductCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(30),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF2962FF).withOpacity(0.1),
+            color: const Color(0xFF2962FF).withValues(alpha: 0.1),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -250,7 +261,7 @@ class _ProductCard extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                         decoration: BoxDecoration(
-                          color: esStockBajo ? const Color(0xFFF50057).withOpacity(0.1) : Colors.green.withOpacity(0.1),
+                          color: esStockBajo ? const Color(0xFFF50057).withValues(alpha: 0.1) : Colors.green.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
@@ -306,7 +317,7 @@ class _EmptyState extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.inventory_2_rounded, size: 100, color: const Color(0xFF2962FF).withOpacity(0.2)),
+          Icon(Icons.inventory_2_rounded, size: 100, color: const Color(0xFF2962FF).withValues(alpha: 0.2)),
           const SizedBox(height: 20),
           const Text('¡TU INVENTARIO ESTÁ LISTO!', style: TextStyle(fontWeight: FontWeight.w900, color: Color(0xFF2962FF))),
         ],

@@ -1,5 +1,4 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 
 /// Modelo de Usuario para la app
@@ -74,6 +73,8 @@ class SupabaseService {
 
   final _supabase = Supabase.instance.client;
 
+  User? get currentUser => _supabase.auth.currentUser;
+
   // --- STORAGE ---
 
   /// Sube una imagen al bucket 'productos' y retorna la URL pública
@@ -104,18 +105,24 @@ class SupabaseService {
     required String correo,
     required String contrasenia,
   }) async {
+    // 1. Registro en Supabase Auth con Metadata para tener el nombre disponible de inmediato
     final response = await _supabase.auth.signUp(
       email: correo,
       password: contrasenia,
+      data: {'nombre_negocio': nombreNegocio},
     );
 
     if (response.user != null) {
-      // Asegúrate de que en Supabase la tabla 'usuarios' tenga las columnas: id, nombre_negocio, correo
-      await _supabase.from('usuarios').insert({
-        'id': response.user!.id, // Este es el UUID de Auth
-        'nombre_negocio': nombreNegocio,
-        'correo': correo,
-      });
+      try {
+        // 2. Intentar insertar/actualizar en la tabla 'usuarios'
+        await _supabase.from('usuarios').upsert({
+          'id': response.user!.id,
+          'nombre_negocio': nombreNegocio,
+          'correo': correo,
+        });
+      } catch (e) {
+        debugPrint('Aviso: Error al guardar datos adicionales: $e');
+      }
     }
   }
 

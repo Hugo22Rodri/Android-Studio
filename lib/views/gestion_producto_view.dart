@@ -21,7 +21,7 @@ class _GestionProductoViewState extends State<GestionProductoView> {
   final _stockController = TextEditingController();
 
   final List<String> _categorias = [
-    'Alimentos',
+    'plantas',
     'Bebidas',
     'Limpieza',
     'Electrónica',
@@ -144,7 +144,7 @@ class _GestionProductoViewState extends State<GestionProductoView> {
                 borderRadius: BorderRadius.circular(40),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFF2962FF).withOpacity(0.05),
+                    color: const Color(0xFF2962FF).withValues(alpha: 0.05),
                     blurRadius: 30,
                     offset: const Offset(0, 10),
                   ),
@@ -192,7 +192,7 @@ class _GestionProductoViewState extends State<GestionProductoView> {
                     ),
                     const SizedBox(height: 20),
                     DropdownButtonFormField<String>(
-                      value: _categoriaSeleccionada,
+                      initialValue: _categoriaSeleccionada,
                       style: const TextStyle(color: Color(0xFF2962FF), fontWeight: FontWeight.bold),
                       decoration: _inputDecoration('CATEGORÍA', Icons.category_rounded),
                       items: _categorias.map((String value) {

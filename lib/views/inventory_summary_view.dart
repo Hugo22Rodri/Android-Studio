@@ -93,7 +93,7 @@ class InventorySummaryView extends StatelessWidget {
                 borderRadius: BorderRadius.circular(30),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFF2962FF).withOpacity(0.05),
+                    color: const Color(0xFF2962FF).withValues(alpha: 0.05),
                     blurRadius: 20,
                   ),
                 ],
@@ -103,7 +103,7 @@ class InventorySummaryView extends StatelessWidget {
                 leading: Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF50057).withOpacity(0.1),
+                    color: const Color(0xFFF50057).withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(Icons.picture_as_pdf_rounded, color: Color(0xFFF50057)),
@@ -146,7 +146,7 @@ class _VibrantCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(30),
         boxShadow: [
           BoxShadow(
-            color: colors[0].withOpacity(0.3),
+            color: colors[0].withValues(alpha: 0.3),
             blurRadius: 15,
             offset: const Offset(0, 8),
           ),
